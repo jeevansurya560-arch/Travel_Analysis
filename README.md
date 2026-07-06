@@ -1,39 +1,92 @@
 # 🌍 Travel Analytics Dashboard & Machine Learning Pipeline
 
-## 📌 Project Overview
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python)
+![MySQL](https://img.shields.io/badge/MySQL-Database-orange?logo=mysql)
+![Power%20BI](https://img.shields.io/badge/Power%20BI-Dashboard-yellow?logo=powerbi)
+![Scikit--Learn](https://img.shields.io/badge/Scikit--Learn-Machine%20Learning-F7931E?logo=scikitlearn)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-This project demonstrates an end-to-end Data Analytics and Machine Learning workflow using a realistic travel booking dataset. The objective is to transform raw, messy booking data into meaningful business insights through data cleaning, SQL analysis, interactive Power BI dashboards, and predictive machine learning.
+---
 
-The project follows a real-world analytics pipeline:
+# 📖 Overview
 
-**Raw Data → Python (Data Cleaning) → MySQL (Data Warehouse) → SQL Analysis → Power BI Dashboard → Machine Learning**
+This project demonstrates an **end-to-end Data Analytics and Machine Learning workflow** built using a realistic travel booking dataset. It showcases how raw transactional data can be transformed into actionable business insights through data cleaning, SQL-based analysis, interactive Power BI dashboards, and predictive machine learning.
+
+The project follows an industry-inspired analytics lifecycle:
+
+```
+Raw Data
+    │
+    ▼
+Python Data Cleaning
+    │
+    ▼
+MySQL Database
+    │
+    ▼
+SQL Business Analysis
+    │
+    ▼
+Exploratory Data Analysis (EDA)
+    │
+    ▼
+Power BI Dashboard
+    │
+    ▼
+Machine Learning Model
+```
+
+The goal is not only to analyze historical travel booking data but also to demonstrate the complete workflow expected in a modern Data Analyst or Business Intelligence project.
+
+---
+
+# 🎯 Business Problem
+
+Travel companies generate thousands of booking transactions every day from multiple channels such as websites, mobile applications, travel agents, and third-party partners.
+
+Raw booking data often contains:
+
+* Missing values
+* Duplicate records
+* Inconsistent date formats
+* Invalid customer information
+* Mixed data types
+* Data quality issues
+
+Without proper preprocessing, businesses cannot accurately measure performance, identify customer trends, or build predictive models.
+
+This project demonstrates how these challenges can be addressed using modern data analytics tools.
 
 ---
 
 # 🎯 Project Objectives
 
+The project aims to:
+
 * Clean and preprocess messy travel booking data.
-* Validate and transform data using Python.
-* Store cleaned data in MySQL.
+* Validate and standardize customer information.
+* Store cleaned datasets in a relational database.
 * Perform business analysis using SQL.
-* Build interactive Power BI dashboards.
-* Develop a Machine Learning model for prediction.
-* Document the complete analytics workflow.
+* Build interactive dashboards using Power BI.
+* Develop Machine Learning models for booking prediction.
+* Compare multiple ML algorithms.
+* Identify the most influential booking features.
+* Document the entire analytics pipeline.
 
 ---
 
 # 🛠️ Tech Stack
 
-| Category         | Technologies     |
-| ---------------- | ---------------- |
-| Programming      | Python           |
-| Data Cleaning    | Pandas, NumPy    |
-| Database         | MySQL            |
-| SQL IDE          | MySQL Workbench  |
-| Visualization    | Power BI         |
-| Machine Learning | Scikit-learn     |
-| Notebook         | Jupyter Notebook |
-| Version Control  | Git & GitHub     |
+| Category           | Technologies     |
+| ------------------ | ---------------- |
+| Programming        | Python           |
+| Data Cleaning      | Pandas, NumPy    |
+| Database           | MySQL            |
+| SQL IDE            | MySQL Workbench  |
+| Data Visualization | Power BI         |
+| Machine Learning   | Scikit-learn     |
+| Notebook           | Jupyter Notebook |
+| Version Control    | Git & GitHub     |
 
 ---
 
@@ -61,134 +114,193 @@ Travel-Analytics-Project
 │   ├── data_import.sql
 │   └── analysis_queries.sql
 │
+├── models
+│   └── best_travel_model.pkl
+│
 ├── powerbi
 │   └── Travel_Analytics.pbix
 │
 ├── images
-│   ├── dashboard_1.png
-│   ├── dashboard_2.png
-│   └── data_pipeline.png
+│   ├── dashboard1.png
+│   ├── dashboard2.png
+│   ├── feature_importance.png
+│   └── confusion_matrix.png
 │
 ├── requirements.txt
-│
 ├── README.md
-│
 └── LICENSE
 ```
 
 ---
 
-# 📊 Dataset Description
+# 🗃️ Dataset Description
 
-The project uses two related datasets designed using a Star Schema.
+The project follows a **Star Schema** data model consisting of one fact table and one dimension table.
 
-## Fact Table
+## FACT_ORDERS
 
-### FACT_ORDERS
+Stores booking transaction details.
 
-Contains booking transaction information.
-
-Columns include:
-
-* Order ID
-* Customer ID
-* Booking Date
-* Travel Date
-* Destination
-* Package Type
-* Booking Channel
-* Quantity
-* Booking Amount
-* Discount Amount
-* Booking Status
-* Payment Method
-* Agent Name
-* Trip Duration
+| Column          |
+| --------------- |
+| Order ID        |
+| Customer ID     |
+| Booking Date    |
+| Travel Date     |
+| Destination     |
+| Package Type    |
+| Booking Channel |
+| Quantity        |
+| Booking Amount  |
+| Discount Amount |
+| Booking Status  |
+| Payment Method  |
+| Agent Name      |
+| Trip Duration   |
 
 ---
 
-## Dimension Table
+## DIM_CUSTOMERS
 
-### DIM_CUSTOMERS
+Stores customer demographic information.
 
-Contains customer demographic information.
-
-Columns include:
-
-* Customer ID
-* Customer Name
-* Email
-* Phone
-* Customer Type
-* City
-* State
-* Country
-* Age
-* Registration Date
-* Loyalty Tier
-* Preferred Destination
+| Column                |
+| --------------------- |
+| Customer ID           |
+| Customer Name         |
+| Email                 |
+| Phone                 |
+| Customer Type         |
+| City                  |
+| State                 |
+| Country               |
+| Age                   |
+| Registration Date     |
+| Loyalty Tier          |
+| Preferred Destination |
 
 ---
 
-# 🧹 Data Cleaning
+# ⭐ Database Schema
 
-The dataset intentionally contains common real-world data quality issues.
+```
+              DIM_CUSTOMERS
+              -------------
+              cust_id (PK)
+              customer_name
+              email
+              phone
+              city
+              state
+              country
+              age
+              loyalty_tier
+              preferred_destination
+                     ▲
+                     │
+                     │
+              customer_id (FK)
+              FACT_ORDERS
+              -------------
+              order_id
+              booking_date
+              travel_date
+              destination
+              package_type
+              booking_channel
+              booking_amount
+              discount_amount
+              booking_status
+              payment_method
+              trip_duration_days
+```
 
-Cleaning tasks performed include:
+---
 
-* Removing duplicate records
-* Handling missing values
-* Standardizing date formats
-* Standardizing phone numbers
-* Cleaning inconsistent text formatting
-* Removing unnecessary whitespace
-* Fixing inconsistent categorical values
-* Converting data types
-* Handling invalid values
-* Exporting cleaned datasets
+# 🧹 Data Cleaning Process
+
+The raw dataset intentionally contained several real-world data quality issues to simulate production environments.
+
+### Cleaning Steps
+
+✔ Removed duplicate records
+
+✔ Standardized inconsistent text values
+
+✔ Corrected mixed date formats
+
+✔ Converted columns to appropriate data types
+
+✔ Standardized categorical values
+
+✔ Removed extra whitespace
+
+✔ Handled missing values
+
+✔ Validated customer records
+
+✔ Checked numerical outliers
+
+✔ Exported cleaned datasets
 
 ---
 
 # 🗄️ MySQL Database
 
-The cleaned datasets are imported into MySQL for relational analysis.
+After preprocessing, the cleaned datasets were imported into MySQL for relational analysis.
 
-Database Structure:
+Database Name:
 
 ```
 travel_analytics
-│
-├── fact_orders
-└── dim_customers
+```
+
+Tables:
+
+```
+fact_orders
+
+dim_customers
 ```
 
 Relationship:
 
 ```
 fact_orders.customer_id
-        │
-        ▼
+          │
+          ▼
 dim_customers.cust_id
 ```
 
 ---
 
-# 📈 SQL Analysis
+# 📈 SQL Business Analysis
 
-Business questions answered using SQL include:
+Several SQL queries were written to answer business questions.
 
-* Total revenue generated
-* Top destinations by revenue
-* Revenue by booking channel
-* Revenue by loyalty tier
-* Revenue by customer type
-* Monthly booking trends
-* Average booking amount
-* Average trip duration
-* Customer distribution
-* Package popularity
+### Revenue Analysis
 
-SQL concepts demonstrated:
+* Total Revenue
+* Average Booking Value
+* Monthly Revenue
+* Revenue by Destination
+* Revenue by Booking Channel
+* Revenue by Loyalty Tier
+
+### Customer Analysis
+
+* Customer Distribution
+* Registered vs Guest Customers
+* Country-wise Customer Count
+
+### Booking Analysis
+
+* Booking Status Distribution
+* Package Popularity
+* Payment Method Analysis
+* Average Trip Duration
+
+### SQL Concepts Demonstrated
 
 * INNER JOIN
 * GROUP BY
@@ -198,52 +310,56 @@ SQL concepts demonstrated:
 * Views
 * Filtering
 * Sorting
+* Aliases
 
 ---
 
 # 📊 Exploratory Data Analysis (EDA)
 
-Python is used to explore the cleaned dataset before visualization.
+Python was used to analyze trends before dashboard development.
 
-EDA includes:
+The following analyses were performed:
 
-* Missing value analysis
-* Distribution plots
-* Correlation analysis
-* Outlier detection
-* Booking trends
-* Customer demographics
-* Revenue distribution
-* Trip duration analysis
+* Missing Value Analysis
+* Booking Distribution
+* Revenue Distribution
+* Destination Analysis
+* Customer Demographics
+* Booking Status Distribution
+* Discount Analysis
+* Trip Duration Analysis
+* Correlation Analysis
+* Outlier Detection
 
-Libraries used:
+### Libraries Used
 
 * Pandas
+* NumPy
 * Matplotlib
 
 ---
 
-# 📉 Power BI Dashboard
+# 📊 Power BI Dashboard
 
-The project contains two interactive dashboards.
+Two interactive dashboards were developed.
 
-## Dashboard 1 — Executive Overview
+## Dashboard 1 – Executive Overview
 
-KPIs
+### KPI Cards
 
 * Total Revenue
 * Total Bookings
 * Average Booking Value
 * Total Customers
 
-Visualizations
+### Visualizations
 
 * Revenue by Destination
 * Monthly Revenue Trend
 * Revenue by Booking Channel
 * Booking Status Distribution
 
-Filters
+### Slicers
 
 * Destination
 * Booking Channel
@@ -251,87 +367,247 @@ Filters
 
 ---
 
-## Dashboard 2 — Customer & Booking Insights
+## Dashboard 2 – Customer Insights
 
-KPIs
+### KPI Cards
 
 * Average Trip Duration
 * Average Discount
 * Registered Customers
 
-Visualizations
+### Visualizations
 
 * Revenue by Loyalty Tier
 * Revenue by Customer Type
-* Top 10 Customers
+* Top Customers
 * Revenue by Package Type
 * Payment Method Distribution
 * Customer Distribution by Country
 
-Filters
+### Slicers
 
 * Loyalty Tier
 * Customer Type
 * Country
-
 ---
 
 # 🤖 Machine Learning
 
-> **Status:** 🚧 In Progress
+The final phase of this project focuses on building predictive models to classify the **booking status** based on customer demographics and booking information.
 
-The next phase of the project involves developing predictive models using Scikit-learn.
+## 🎯 Business Objective
 
-Potential prediction tasks include:
+Predict whether a travel booking is likely to be:
 
-* Booking Status Classification
-* Booking Amount Prediction
+* Completed
+* Cancelled
+* Pending
 
-Planned algorithms:
+Such predictions can help travel companies:
 
-* Logistic Regression
-* Decision Tree
-* Random Forest
-
-Evaluation metrics:
-
-* Accuracy
-* Precision
-* Recall
-* F1 Score
-* Confusion Matrix
-* ROC-AUC (if applicable)
+* Identify bookings at risk of cancellation.
+* Improve customer engagement strategies.
+* Optimize promotional campaigns.
+* Support business decision-making using predictive analytics.
 
 ---
 
-# 📌 Key Skills Demonstrated
+# 🧠 Machine Learning Workflow
 
-* Data Cleaning
-* Data Validation
-* Data Transformation
-* SQL Query Writing
-* Relational Database Design
-* Exploratory Data Analysis
-* Dashboard Development
-* Data Visualization
-* DAX Measures
-* Machine Learning
-* Business Intelligence
-* Data Storytelling
-
----
-
-# 🚀 How to Run the Project
-
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/yourusername/Travel-Analytics-Project.git
+```text
+Load Cleaned Data
+        │
+        ▼
+Merge Fact & Dimension Tables
+        │
+        ▼
+Data Preprocessing
+        │
+        ▼
+Feature Engineering
+        │
+        ▼
+Encoding Categorical Variables
+        │
+        ▼
+Train-Test Split (80:20)
+        │
+        ▼
+Model Training
+        │
+        ▼
+Model Evaluation
+        │
+        ▼
+Hyperparameter Tuning
+        │
+        ▼
+Cross Validation
+        │
+        ▼
+Feature Importance
+        │
+        ▼
+Model Serialization (.pkl)
 ```
 
 ---
 
-### 2. Install Dependencies
+# ⚙️ Data Preprocessing
+
+The following preprocessing steps were performed before training the models:
+
+* Merged fact and dimension tables.
+* Removed unnecessary identifier columns.
+* Converted date columns into datetime format.
+* Extracted useful date features.
+* Encoded categorical variables.
+* Created feature matrix (**X**) and target variable (**y**).
+* Split the dataset into training and testing sets.
+
+---
+
+# 🧪 Machine Learning Models
+
+Multiple supervised classification algorithms were trained and compared.
+
+| Model               | Purpose                   |
+| ------------------- | ------------------------- |
+| Logistic Regression | Baseline Classification   |
+| Decision Tree       | Rule-Based Classification |
+| Random Forest       | Ensemble Learning         |
+| Tuned Random Forest | Final Optimized Model     |
+
+---
+
+# 📊 Model Evaluation Metrics
+
+The following metrics were used to evaluate each model:
+
+* Accuracy
+* Precision
+* Recall
+* F1-Score
+* Classification Report
+* Confusion Matrix
+* 5-Fold Cross Validation
+
+---
+
+# ⭐ Best Performing Model
+
+**Model:** Tuned Random Forest
+
+The final model was optimized using **RandomizedSearchCV** and validated using **5-fold cross-validation** to improve generalization.
+
+The trained model was saved as:
+
+```text
+models/best_travel_model.pkl
+```
+
+This allows predictions to be made without retraining the model.
+
+---
+
+# 📈 Feature Importance
+
+The Random Forest model was used to identify the most influential features contributing to booking status prediction.
+
+Example output:
+
+* Booking Amount
+* Discount Amount
+* Booking Channel
+* Package Type
+* Loyalty Tier
+* Trip Duration
+* Customer Type
+
+> Add the generated **Feature Importance** plot here after running the notebook.
+
+---
+
+# 📉 Confusion Matrix
+
+A confusion matrix was generated to evaluate prediction performance across all booking status classes.
+
+> Add the confusion matrix screenshot here.
+
+---
+
+# 💼 Business Insights
+
+The analysis generated several actionable business insights, including:
+
+* Identified the destinations generating the highest revenue.
+* Compared booking performance across channels.
+* Evaluated customer distribution by loyalty tier.
+* Analyzed booking behavior across customer types.
+* Measured the impact of discounts on booking values.
+* Identified package types contributing the highest revenue.
+* Compared payment method usage.
+* Built a predictive model for booking status classification.
+
+---
+
+# 📸 Dashboard Preview
+
+## Executive Dashboard
+
+> Add screenshot here
+
+```
+images/dashboard1.png
+```
+
+---
+
+## Customer Insights Dashboard
+
+> Add screenshot here
+
+```
+images/dashboard2.png
+```
+
+---
+
+## Feature Importance
+
+> Add screenshot here
+
+```
+images/feature_importance.png
+```
+
+---
+
+## Confusion Matrix
+
+> Add screenshot here
+
+```
+images/confusion_matrix.png
+```
+
+---
+
+# 🚀 Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/<your-username>/Travel-Analytics-Project.git
+```
+
+Move into the project directory:
+
+```bash
+cd Travel-Analytics-Project
+```
+
+Install the required packages:
 
 ```bash
 pip install -r requirements.txt
@@ -339,91 +615,164 @@ pip install -r requirements.txt
 
 ---
 
-### 3. Open Jupyter Notebook
+# ▶️ Running the Project
 
-Run:
+### Step 1
 
-```
+Run the data cleaning notebook:
+
+```text
 01_data_cleaning.ipynb
 ```
 
-Then execute:
+---
 
-```
+### Step 2
+
+Run exploratory data analysis:
+
+```text
 02_eda.ipynb
 ```
 
-Finally:
+---
 
-```
+### Step 3
+
+Run the machine learning notebook:
+
+```text
 03_machine_learning.ipynb
 ```
 
 ---
 
-### 4. Import Data into MySQL
+### Step 4
 
-Create the database:
+Create the MySQL database:
 
 ```sql
 CREATE DATABASE travel_analytics;
 ```
 
-Import the cleaned CSV files into:
+Import the cleaned datasets into:
 
 * fact_orders
 * dim_customers
 
+Run the SQL scripts available in the **sql** folder.
+
 ---
 
-### 5. Open Power BI
+### Step 5
 
 Open:
 
-```
+```text
 Travel_Analytics.pbix
 ```
 
-Refresh the data source and interact with the dashboards.
+Refresh the MySQL connection to interact with the dashboards.
 
 ---
 
-# 📷 Dashboard Preview
+# 📁 Repository Contents
 
-## Executive Dashboard
+```
+✔ Raw Dataset
 
-> *(Screenshot will be added after completion.)*
+✔ Cleaned Dataset
 
----
+✔ Python Cleaning Notebook
 
-## Customer Dashboard
+✔ Exploratory Data Analysis Notebook
 
-> *(Screenshot will be added after completion.)*
+✔ Machine Learning Notebook
+
+✔ SQL Scripts
+
+✔ Power BI Dashboard
+
+✔ Saved ML Model (.pkl)
+
+✔ Dashboard Images
+
+✔ README
+
+✔ Requirements File
+```
 
 ---
 
 # 📚 Future Improvements
 
-* Add predictive booking analytics
-* Deploy dashboards to Power BI Service
-* Automate ETL workflow
-* Create interactive drill-through reports
-* Add forecasting visualizations
-* Deploy a Streamlit web application
-* Containerize the project using Docker
+Possible enhancements include:
+
+* Replace label encoding of features with one-hot encoding.
+* Deploy the model using Streamlit.
+* Publish dashboards using Power BI Service.
+* Automate the ETL pipeline.
+* Add real-time booking data integration.
+* Implement advanced models such as XGBoost.
+* Deploy the model using Docker and cloud services.
+
+---
+
+# 🎓 Skills Demonstrated
+
+## Data Analytics
+
+* Data Cleaning
+* Data Validation
+* Data Transformation
+* Exploratory Data Analysis
+* Business Intelligence
+* Data Visualization
+* Dashboard Design
+
+## SQL
+
+* Joins
+* Views
+* Aggregations
+* Filtering
+* Sorting
+* Grouping
+* Database Design
+
+## Machine Learning
+
+* Classification
+* Feature Engineering
+* Model Evaluation
+* Hyperparameter Tuning
+* Cross Validation
+* Feature Importance
+* Model Serialization
+
+## Tools
+
+* Python
+* Pandas
+* NumPy
+* MySQL
+* Power BI
+* Scikit-learn
+* Jupyter Notebook
+* Git
+* GitHub
 
 ---
 
 # 👨‍💻 Author
 
-**Jeevan Surya**
+**Jeevan Surya Jalli**
 
-LinkedIn: *(Add your LinkedIn URL)*
+📍 Visakhapatnam, Andhra Pradesh, India
 
-GitHub: *(Add your GitHub URL)*
+📧 Email: [jalli.jeevansurya1019@gmail.com](mailto:jalli.jeevansurya1019@gmail.com)
 
-Email: *(Add your Email)*
+💼 LinkedIn: https://www.linkedin.com/in/jeevan-surya
 
----
+💻 GitHub: https://github.com/jeevansurya560-arch
 
-# ⭐ If you found this project useful, consider giving the repository a star!
